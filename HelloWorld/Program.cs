@@ -38,9 +38,18 @@ namespace HelloWorld // Note: actual namespace depends on the project name.
 
             decimal mySecondDecimal = 0.75m;
 
-            Console.WriteLine(myFloat - mySecondFloat);
-            Console.WriteLine(myDouble - mySecondDouble);
-            Console.WriteLine(myDecimal - mySecondDecimal);
+            // Console.WriteLine(myFloat - mySecondFloat);
+            // Console.WriteLine(myDouble - mySecondDouble);
+            // Console.WriteLine(myDecimal - mySecondDecimal);
+
+            string myString = "Hello World!";
+            Console.WriteLine(myString);
+
+            bool myBool = myString.Length == 0;
+
+            myString = myBool == true ? "blah blah" : "fjkdj";
+
+
 
         }
     }
