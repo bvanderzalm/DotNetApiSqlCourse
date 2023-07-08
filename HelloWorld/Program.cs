@@ -77,6 +77,12 @@ namespace HelloWorld // Note: actual namespace depends on the project name.
                 { "3", "4"},
             };
 
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+
+            dictionary.Add("key", "data");
+
+            Console.WriteLine(dictionary["key"]);
+
         }
     }
 }
