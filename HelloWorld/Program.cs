@@ -66,29 +66,64 @@ namespace HelloWorld // Note: actual namespace depends on the project name.
 
             IEnumerable<string> myGroceryIenumerable = myGroceryList;
 
-            Console.WriteLine(myGroceryIenumerable.First()); // Ienumerable is good for read only or initializing stuff and then use it for sorting, filtering, etc
+            // Console.WriteLine(myGroceryIenumerable.First()); // Ienumerable is good for read only or initializing stuff and then use it for sorting, filtering, etc
 
             //So if you need the ability to make permanent changes of any kind to your collection (add & remove), 
             // you'll need List. If you just need to read, sort and/or filter your collection, IEnumerable is sufficient for that purpose.
 
 
-            string[,] twoDimensionalArray = new string[,] {
-                { "1", "2"},
-                { "3", "4"},
-            };
+            // string[,] twoDimensionalArray = new string[,] {
+            //     { "1", "2"},
+            //     { "3", "4"},
+            // };
 
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            // Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
-            dictionary.Add("key", "data");
+            // dictionary.Add("key", "data");
 
             // Console.WriteLine(dictionary["key"]);
 
             // Console.WriteLine("hello\"");
 
-            Console.WriteLine(.002 - .001);
-            Console.WriteLine(.002m - .001m);
-            Console.WriteLine(.002f - .001f);
-            Console.WriteLine(.002d - .001d);
+
+            int myInt = 5;
+            int mySecondInt = 10;
+
+            if (myInt < mySecondInt)
+            {
+                myInt += 10;
+            }
+
+            // Console.WriteLine(myInt);
+
+            string myCow = "cow";
+            string myCapitalizedCow = "Cow";
+
+            if (myCow == myCapitalizedCow)
+            {
+                Console.WriteLine("equal");
+            }
+            else if (myCow == myCapitalizedCow.ToLower())
+            {
+                Console.WriteLine("equal case insensitive");
+            }
+            else
+            {
+                Console.WriteLine("not equal");
+            }
+
+            switch (myCow)
+            {
+                case "cow":
+                    Console.WriteLine("Lowercase");
+                    break;
+                case "Cow":
+                    Console.WriteLine("Capitalized");
+                    break;
+                default:
+                    Console.WriteLine("Default ran");
+                    break;
+            }
 
         }
     }
