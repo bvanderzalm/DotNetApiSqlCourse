@@ -81,9 +81,14 @@ namespace HelloWorld // Note: actual namespace depends on the project name.
 
             dictionary.Add("key", "data");
 
-            Console.WriteLine(dictionary["key"]);
+            // Console.WriteLine(dictionary["key"]);
 
-            Console.WriteLine("hello\"");
+            // Console.WriteLine("hello\"");
+
+            Console.WriteLine(.002 - .001);
+            Console.WriteLine(.002m - .001m);
+            Console.WriteLine(.002f - .001f);
+            Console.WriteLine(.002d - .001d);
 
         }
     }
