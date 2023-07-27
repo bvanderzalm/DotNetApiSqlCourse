@@ -10,8 +10,18 @@ namespace HelloWorld // Note: actual namespace depends on the project name.
 {
     internal class Program
     {
+        static int accessibleInt = 7;
+
+        void TestMethod()
+        {
+            Console.WriteLine(accessibleInt + 10);
+        }
+
         static void Main(string[] args)
         {
+            Console.WriteLine(accessibleInt++);
+            accessibleInt = 5;
+            Console.WriteLine(accessibleInt);
             // Console.WriteLine(args[0]);
 
             // Useful for storing constants more efficiently
@@ -187,9 +197,9 @@ namespace HelloWorld // Note: actual namespace depends on the project name.
             // Console.WriteLine((DateTime.Now - startTime).TotalSeconds);
             // Console.WriteLine("sum method");
 
-            int[] intsToCompress = new int[] {10,15,20,25,30,12,34};
-            int totalValue = GetSum(intsToCompress);
-            Console.WriteLine(totalValue);            
+            // int[] intsToCompress = new int[] {10,15,20,25,30,12,34};
+            // int totalValue = GetSum(intsToCompress);
+            // Console.WriteLine(totalValue);            
         }
 
         private static int GetSum(int[] intsToCompress)
