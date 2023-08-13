@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using Section2.Data;
 
 namespace Section2
 {
@@ -9,13 +10,11 @@ namespace Section2
     {
         static void Main(string[] args)
         {
-            string connectionString = "Server=localhost;Database=DotNetCourseDatabase;Trusted_Connection=false;TrustServerCertificate=True;User Id=sa;Password=SQLConnect1;";
+            DataContextDapper dapper = new DataContextDapper();
 
-            IDbConnection dbConnection = new SqlConnection(connectionString);
-
-            // string sqlCommand = "SELECT GETDATE()";
-            // DateTime rightNow = dbConnection.QuerySingle<DateTime>(sqlCommand);
-            // Console.WriteLine(rightNow);
+            string sqlCommand = "SELECT GETDATE()";
+            DateTime rightNow = dapper.LoadDataSingle<DateTime>(sqlCommand);
+            Console.WriteLine(rightNow);
 
             Computer myComputer = new Computer()
             {
@@ -27,12 +26,12 @@ namespace Section2
                 VideoCard = "RTX 2060",
             };
 
-            // int result = InsertComputer(myComputer, dbConnection);
+            // bool result = InsertComputer(myComputer, dapper);
 
-            PrintAllComputers(dbConnection);
+            PrintAllComputers(dapper);
         }
 
-        public static int InsertComputer(Computer computer, IDbConnection dbConnection)
+        public static bool InsertComputer(Computer computer, DataContextDapper dapper)
         {
             string sql = @"INSERT INTO TutorialAppSchema.Computer (
                 Motherboard,
@@ -49,10 +48,10 @@ namespace Section2
                     + "','" + computer.VideoCard
             + "')";
 
-            return dbConnection.Execute(sql);
+            return dapper.ExecuteSql(sql);
         }
 
-        public static void PrintAllComputers(IDbConnection dbConnection)
+        public static void PrintAllComputers(DataContextDapper dapper)
         {
             string sqlSelect = @"
                 SELECT
@@ -64,8 +63,8 @@ namespace Section2
                     Computer.VideoCard
                 FROM TutorialAppSchema.Computer";
 
-            IEnumerable<Computer> computers = dbConnection.Query<Computer>(sqlSelect);
-            // List<Computer> computers = dbConnection.Query<Computer>(sqlSelect).ToList();
+            IEnumerable<Computer> computers = dapper.LoadData<Computer>(sqlSelect);
+            // List<Computer> computers = dapper.LoadData<Computer>(sqlSelect).ToList();
 
             foreach(Computer computer in computers)
             {
