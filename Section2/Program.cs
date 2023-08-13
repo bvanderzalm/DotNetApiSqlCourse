@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿namespace Section2
 {
     public class Computer
     {
