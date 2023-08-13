@@ -13,9 +13,9 @@ namespace Section2
 
             IDbConnection dbConnection = new SqlConnection(connectionString);
 
-            string sqlCommand = "SELECT GETDATE()";
-            DateTime rightNow = dbConnection.QuerySingle<DateTime>(sqlCommand);
-            Console.WriteLine(rightNow);
+            // string sqlCommand = "SELECT GETDATE()";
+            // DateTime rightNow = dbConnection.QuerySingle<DateTime>(sqlCommand);
+            // Console.WriteLine(rightNow);
 
             Computer myComputer = new Computer()
             {
@@ -26,13 +26,59 @@ namespace Section2
                 Price = 943.87m,
                 VideoCard = "RTX 2060",
             };
-            myComputer.HasWifi = false;
-            // Console.WriteLine(myComputer.Motherboard);
-            // Console.WriteLine(myComputer.HasWifi);
-            // Console.WriteLine(myComputer.HasLte);
-            // Console.WriteLine(myComputer.ReleaseDate);
-            // Console.WriteLine(myComputer.Price);
-            // Console.WriteLine(myComputer.VideoCard);
+
+            // int result = InsertComputer(myComputer, dbConnection);
+
+            PrintAllComputers(dbConnection);
+        }
+
+        public static int InsertComputer(Computer computer, IDbConnection dbConnection)
+        {
+            string sql = @"INSERT INTO TutorialAppSchema.Computer (
+                Motherboard,
+                HasWifi,
+                HasLte,
+                ReleaseDate,
+                Price,
+                VideoCard
+            ) VALUES ('" + computer.Motherboard
+                    + "','" + computer.HasWifi
+                    + "','" + computer.HasLte
+                    + "','" + computer.ReleaseDate
+                    + "','" + computer.Price
+                    + "','" + computer.VideoCard
+            + "')";
+
+            return dbConnection.Execute(sql);
+        }
+
+        public static void PrintAllComputers(IDbConnection dbConnection)
+        {
+            string sqlSelect = @"
+                SELECT
+                    Computer.Motherboard,
+                    Computer.HasWifi,
+                    Computer.HasLte,
+                    Computer.ReleaseDate,
+                    Computer.Price,
+                    Computer.VideoCard
+                FROM TutorialAppSchema.Computer";
+
+            IEnumerable<Computer> computers = dbConnection.Query<Computer>(sqlSelect);
+            // List<Computer> computers = dbConnection.Query<Computer>(sqlSelect).ToList();
+
+            foreach(Computer computer in computers)
+            {
+                Console.WriteLine("'" + computer.Motherboard
+                    + "','" + computer.HasWifi
+                    + "','" + computer.HasLte
+                    + "','" + computer.ReleaseDate
+                    + "','" + computer.Price
+                    + "','" + computer.VideoCard + "'");
+
+                Console.WriteLine("'Motherboard','HasWifi','HasLTE','ReleaseDate','Price','Videocard'");
+                Console.WriteLine();
+            }
         }
     }
 }
