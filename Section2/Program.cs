@@ -11,6 +11,7 @@ namespace Section2
         static void Main(string[] args)
         {
             DataContextDapper dapper = new DataContextDapper();
+            DataContextEF entityFramework = new DataContextEF();
 
             string sqlCommand = "SELECT GETDATE()";
             DateTime rightNow = dapper.LoadDataSingle<DateTime>(sqlCommand);
@@ -26,12 +27,24 @@ namespace Section2
                 VideoCard = "RTX 2060",
             };
 
-            // bool result = InsertComputer(myComputer, dapper);
+            // EntityFrameworkAddComputer(myComputer, entityFramework);
+            // bool result = SqlInsertComputer(myComputer, dapper);
 
-            PrintAllComputers(dapper);
+            IEnumerable<Computer>? computersEf = entityFramework.Computer?.ToList<Computer>();
+            if (computersEf != null)
+                PrintComputerList(computersEf.ToList());
+
+            // Console.WriteLine("dapper");
+            // PrintAllComputersDapper(dapper);
         }
 
-        public static bool InsertComputer(Computer computer, DataContextDapper dapper)
+        public static void EntityFrameworkAddComputer(Computer computer, DataContextEF entityFramework)
+        {
+            entityFramework.Add(computer);
+            entityFramework.SaveChanges();
+        }
+
+        public static bool SqlInsertComputer(Computer computer, DataContextDapper dapper)
         {
             string sql = @"INSERT INTO TutorialAppSchema.Computer (
                 Motherboard,
@@ -51,10 +64,11 @@ namespace Section2
             return dapper.ExecuteSql(sql);
         }
 
-        public static void PrintAllComputers(DataContextDapper dapper)
+        public static void PrintAllComputersDapper(DataContextDapper dapper)
         {
             string sqlSelect = @"
                 SELECT
+                    Computer.ComputerId,
                     Computer.Motherboard,
                     Computer.HasWifi,
                     Computer.HasLte,
@@ -65,17 +79,22 @@ namespace Section2
 
             IEnumerable<Computer> computers = dapper.LoadData<Computer>(sqlSelect);
             // List<Computer> computers = dapper.LoadData<Computer>(sqlSelect).ToList();
+            PrintComputerList(computers.ToList());
+        }
 
+        public static void PrintComputerList(List<Computer> computers)
+        {
             foreach(Computer computer in computers)
             {
-                Console.WriteLine("'" + computer.Motherboard
+                Console.WriteLine("'" + computer.ComputerId
+                    + "','" + computer.Motherboard
                     + "','" + computer.HasWifi
                     + "','" + computer.HasLte
                     + "','" + computer.ReleaseDate
                     + "','" + computer.Price
                     + "','" + computer.VideoCard + "'");
 
-                Console.WriteLine("'Motherboard','HasWifi','HasLTE','ReleaseDate','Price','Videocard'");
+                Console.WriteLine("'ComputerId','Motherboard','HasWifi','HasLTE','ReleaseDate','Price','Videocard'");
                 Console.WriteLine();
             }
         }
