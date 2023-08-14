@@ -3,6 +3,7 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using Dapper;
 using Section2.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace Section2
 {
@@ -10,8 +11,12 @@ namespace Section2
     {
         static void Main(string[] args)
         {
-            DataContextDapper dapper = new DataContextDapper();
-            DataContextEF entityFramework = new DataContextEF();
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            DataContextDapper dapper = new DataContextDapper(config);
+            DataContextEF entityFramework = new DataContextEF(config);
 
             string sqlCommand = "SELECT GETDATE()";
             DateTime rightNow = dapper.LoadDataSingle<DateTime>(sqlCommand);
@@ -23,19 +28,20 @@ namespace Section2
                 HasWifi = true,
                 HasLte = false,
                 ReleaseDate = DateTime.Now,
-                Price = 943.87m,
+                Price = 843.87m,
                 VideoCard = "RTX 2060",
             };
 
             // EntityFrameworkAddComputer(myComputer, entityFramework);
             // bool result = SqlInsertComputer(myComputer, dapper);
 
+            Console.WriteLine("entity framework");
             IEnumerable<Computer>? computersEf = entityFramework.Computer?.ToList<Computer>();
             if (computersEf != null)
                 PrintComputerList(computersEf.ToList());
 
-            // Console.WriteLine("dapper");
-            // PrintAllComputersDapper(dapper);
+            Console.WriteLine("dapper");
+            PrintAllComputersDapper(dapper);
         }
 
         public static void EntityFrameworkAddComputer(Computer computer, DataContextEF entityFramework)
