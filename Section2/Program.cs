@@ -11,6 +11,46 @@ namespace Section2
     {
         static void Main(string[] args)
         {
+            // Section2();
+
+            Computer computer = new Computer()
+            {
+                Motherboard = "Z690",
+                HasWifi = true,
+                HasLte = false,
+                ReleaseDate = DateTime.Now,
+                Price = 843.87m,
+                VideoCard = "RTX 2060",
+            };
+
+            string sql = @"INSERT INTO TutorialAppSchema.Computer (
+                Motherboard,
+                HasWifi,
+                HasLte,
+                ReleaseDate,
+                Price,
+                VideoCard
+            ) VALUES ('" + computer.Motherboard
+                    + "','" + computer.HasWifi
+                    + "','" + computer.HasLte
+                    + "','" + computer.ReleaseDate
+                    + "','" + computer.Price
+                    + "','" + computer.VideoCard
+            + "')";
+
+            // File.WriteAllText("log.txt", "\n" + sql + "\n"); // will override file everytime
+
+            using StreamWriter openFile = new("log.txt", append: true);
+            openFile.WriteLine("\n" + sql + "\n"); // will append all sql inserts
+            openFile.Close();
+
+            string fileText = File.ReadAllText("log.txt");
+
+            Console.WriteLine(fileText);
+        }
+
+        public static void Section2()
+        {
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
