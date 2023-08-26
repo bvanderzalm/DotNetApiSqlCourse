@@ -45,22 +45,23 @@
 
 -- DELETE TOP(1) FROM TutorialAppSchema.Computer WHERE ComputerId = 101
 
--- Select statement that also updates? Checks if CPU core is null and if so sets to 0. The column name is also lost so set AS CpuCores as the column name
--- SELECT [ComputerId]
---       , [Motherboard]
---       , ISNULL([CPUCores], 0) AS CpuCores
---       , [HasWifi]
---       , [HasLTE]
---       , [ReleaseDate]
---       , [Price]
---       , [VideoCard]
--- FROM TutorialAppSchema.Computer
+-- Select statement that doesn't update by views the data differently. Checks if CPU core is null and if so sets to 0. The column name is also lost so set AS CpuCores as the column name
+-- But not officialy lost it just doesn't understand
+SELECT [ComputerId]
+      , [Motherboard]
+      , ISNULL([CPUCores], 0) AS CpuCoresNewTempName
+      , [HasWifi]
+      , [HasLTE]
+      , [ReleaseDate]
+      , [Price]
+      , [VideoCard]
+FROM TutorialAppSchema.Computer
 
 -- UPDATE TutorialAppSchema.Computer SET CpuCores = NULL WHERE [ReleaseDate] > '2017-01-01'
 
 SELECT [ComputerId]
       , [Motherboard]
-      , ISNULL([CPUCores], 4) AS CpuCores
+      , [CPUCores]
       , [HasWifi]
       , [HasLTE]
       , [ReleaseDate]
