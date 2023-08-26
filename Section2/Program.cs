@@ -7,12 +7,70 @@ using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using AutoMapper;
 
 namespace Section2
 {
     internal class Program
     {
         static void Main(string[] args)
+        {
+            Section41Mapping();
+        }
+
+        static void Section41Mapping()
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+            DataContextDapper dapper = new DataContextDapper(config);
+
+            string computersJson = File.ReadAllText("ComputersSnake.json");
+
+            // -- Manual way of mapping one field to another that are the same but different names --
+
+            Mapper mapper = new Mapper(new MapperConfiguration((cfg) => {
+                cfg.CreateMap<ComputerSnake, Computer>()
+                    .ForMember(destination => destination.ComputerId, options =>
+                        options.MapFrom(source => source.computer_id))
+                    .ForMember(destination => destination.CPUCores, options =>
+                        options.MapFrom(source => source.cpu_cores))
+                    .ForMember(destination => destination.HasLte, options =>
+                        options.MapFrom(source => source.has_lte))
+                    .ForMember(destination => destination.HasWifi, options =>
+                        options.MapFrom(source => source.has_wifi))
+                    .ForMember(destination => destination.Motherboard, options =>
+                        options.MapFrom(source => source.motherboard))
+                    .ForMember(destination => destination.VideoCard, options =>
+                        options.MapFrom(source => source.video_card))
+                    .ForMember(destination => destination.Price, options =>
+                        options.MapFrom(source => source.price));
+                    // able to convert to another currency for example (mult source.price by 0.8m i.e), better use case of automapping
+            }));
+
+            IEnumerable<ComputerSnake>? computersSystem = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<ComputerSnake>>(computersJson);
+
+            if (computersSystem != null)
+            {
+                IEnumerable<Computer> computerResult = mapper.Map<IEnumerable<Computer>>(computersSystem);
+                Console.WriteLine("Automapper Count: " + computerResult.Count());
+                // foreach (Computer computer in computerResult)
+                //     Console.WriteLine(computer.Motherboard);
+            }
+
+            // -- Automatic way of mapping via the model --
+
+            IEnumerable<Computer>? computersSystemJsonPropertyMapping = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<Computer>>(computersJson);
+
+            if (computersSystemJsonPropertyMapping != null)
+            {
+                Console.WriteLine("JSON Property Count: " + computersSystemJsonPropertyMapping.Count());
+                // foreach (Computer computer in computersSystemJsonPropertyMapping)
+                //     Console.WriteLine(computer.Motherboard);
+            }
+        }
+
+        static void Section40JsonWritingToDb()
         {
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
